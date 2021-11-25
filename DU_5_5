@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+
+
+int main ( ){
+    char operatorInput;
+    int numberOfFolowingProductsN;
+    char * arrayOfProducts;
+    char nameOfProduct[99];
+
+    printf("Pocet sledovanych:\n");
+    if ( (scanf("%d", &numberOfFolowingProductsN)) != 1 || numberOfFolowingProductsN <= 0 ){
+        printf("Nespravny vstup.\n");
+        return 0;
+    }
+    printf("Pozadavky:\n");
+    while((scanf("%c", &operatorInput)) == 1) {
+        switch (operatorInput){
+            case '+':
+                scanf("%s", &nameOfProduct);
+                break;
+        }
+    }
+
+
+//    if ( (scanf("%c", &operatorInput)) != 1 ||  ){}
+    return 0;
+}
