@@ -1,0 +1,133 @@
+#include <stdio.h>
+#include <math.h>
+
+
+ bool doubleComparison (double a, double b){
+    double fmax = (fabs(a) > fabs(b) ? fabs(b) : fabs(a));
+    return fabs(a - b) <= ( fmax * 0.0000001f );
+}
+
+int main() {
+    char fig1, fig2;
+    double a1, b1, c1, a2, b2, c2;
+    double obvod1 = 0, obsah1 = 0, obvod2 = 0, obsah2 = 0;
+    double p, s;
+    const char *str1 = 0;
+    const char *str2 = 0;
+
+    printf("Obrazec #1\n");
+    if ( scanf(" %c", &fig1) != 1) {
+        printf("Nespravny vstup.\n");
+        return 0;
+    }
+
+    switch (fig1) {
+        case 'R':
+            if ( scanf(" %lf %lf", &a1, &b1) != 2 || a1 <= 0 || b1 <= 0 || a1 == b1 ) {
+                printf("Nespravny vstup.\n");
+                return 0;
+            } else {
+                str1 = "obdelnik #1";
+                obvod1 = a1*2 + b1*2;
+                obsah1 = a1 * b1;
+            }
+            break;
+        case 'S':
+            if ( scanf(" %lf", &a1) != 1 || a1 <= 0 ) {
+                printf("Nespravny vstup.\n");
+                return 0;
+            } else {
+                str1 = "ctverec #1";
+                obsah1 = a1 * a1;
+                obvod1 = a1 * 4;
+            }
+            break;
+        case 'T':
+            if ( scanf(" %lf %lf %lf", &a1, &b1, &c1) != 3 || a1 <= 0 || b1 <= 0 || c1 <= 0){
+                printf("Nespravny vstup.\n");
+                return 0;
+            } else if (doubleComparison(a1 + b1, c1) == 1 || doubleComparison(c1 + b1, a1) == 1 || doubleComparison(a1 + c1, b1) == 1 ) {
+                printf("Nespravny vstup.\n");
+                return 0;
+            } else if (a1 + b1 < c1 || b1 + c1 < a1 || a1 + c1 < b1) {
+                printf("Nespravny vstup.\n");
+                return 0;
+            } else {
+                str1 = "trojuhelnik #1";
+                obvod1 = a1 + b1 + c1;
+                p = obvod1/2;
+                obsah1 = sqrt(p * (p - a1) * (p - b1) * (p - c1));
+            }
+            break;
+        default:
+            printf("Nespravny vstup.\n");
+            return 0;
+    }
+
+    printf("Obrazec #2\n");
+    if ( scanf(" %c", &fig2) != 1 ){
+        printf("Nespravny vstup.\n");
+        return 0;
+    }
+
+    switch (fig2) {
+        case 'R':
+            if ( scanf(" %lf %lf", &a2, &b2) != 2 || a2 <= 0 || b2 <= 0 || a2 == b2){
+                printf("Nespravny vstup.\n");
+                return 0;
+            } else {
+                str2 = "obdelnik #2";
+                obvod2 = a2 * 2 + b2 * 2;
+                obsah2 = a2 * b2;
+            }
+            break;
+        case 'S':
+            if ( scanf(" %lf", &a2) != 1 || a2 <= 0){
+                printf("Nespravny vstup.\n");
+                return 0;
+            } else {
+                str2 = "ctverec #2";
+                obvod2 = 4 * a2;
+                obsah2 = a2 * a2;
+            }
+            break;
+        case 'T':
+            if ( scanf(" %lf %lf %lf", &a2, &b2, &c2) != 3 || a2 <= 0 || b2 <= 0 || c2 <= 0){
+                printf("Nespravny vstup.\n");
+                return 0;
+            } else if (doubleComparison(a2 + b2, c2) == 1 || doubleComparison(c2 + b2, a2) == 1 || doubleComparison(a2 + c2, b2) == 1) {
+                printf("Nespravny vstup.\n");
+                return 0;
+            } else if (a2 + b2 < c2 || b2 + c2 < a2 || a2 + c2 < b2) {
+                printf("Nespravny vstup.\n");
+                return 0;
+            } else {
+                str2 = "trojuhelnik #2";
+                obvod2 = a2 + b2 + c2;
+                s = obvod2/2;
+                obsah2 = sqrt(s * (s - a2) * (s - b2) * (s - c2));
+            }
+            break;
+        default:
+            printf("Nespravny vstup.\n");
+            return 0;
+    }
+
+    if (doubleComparison(obvod1, obvod2) == 1){
+        printf("Obvod: %s = %s\n", str1, str2);
+    } else if (obvod1 > obvod2) {
+        printf("Obvod: %s > %s\n", str1, str2);
+    } else {
+        printf("Obvod: %s < %s\n", str1, str2);
+    }
+
+    if (doubleComparison(obsah1, obsah2) == 1){
+        printf("Obsah: %s = %s\n", str1, str2);
+    } else if (obsah1 > obsah2) {
+        printf("Obsah: %s > %s\n", str1, str2);
+    } else {
+        printf("Obsah: %s < %s\n", str1, str2);
+    }
+
+    return 0;
+}
