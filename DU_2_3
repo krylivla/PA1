@@ -1,0 +1,174 @@
+#include <stdio.h>
+
+int main( ) {
+    int a, b, c = 0, tmp = 0, d = 0, k = 0, a_remember = 0;
+    int temporary = 0, temporary_copy = 0, temporary_number = 0, enter = 0, tmp_copy = 0, tmp_number = 0;
+    int tmp_future_number = 0, tmp_future_copy = 0, tmp_future = 0;
+    int n = 0, result = 0, last_result = 0, result_number = 0, result_copy = 0, last_result_copy = 0, last_result_number = 0;
+    int arr[100];
+    printf("Zadejte dve cisla:\n");
+    if ( scanf(" %d %d", &a, &b) != 2 || a < 0 || b <= 0){
+        printf("Nespravny vstup.\n");
+        return 0;
+    }
+    c = a/b;
+    a_remember = a;
+    printf(" %d : %d = %d\n", a, b, c);
+    // массив цифр a
+    for (int i = 0; a > 0; i++){
+        int mod = a % 10;
+        arr[i] = mod;
+        a = a / 10;
+        d++;
+    }
+    int * apole = new int [d];
+    if (b > a_remember){
+        for(int i = 0; i < d; i++){
+            printf(" ");
+        }
+        printf("0\n");
+        printf(" %d zbytek\n", a_remember);
+        return 0;
+    }
+    for (int i = (d-1); i >= 0; i--){
+        apole[i] = arr[d-i-1];
+    }
+
+    // массив цифр c
+    for (int i = 0; c > 0; i++){
+        int mod = c % 10;
+        arr[i] = mod;
+        c = c / 10;
+        k++;
+    }
+    int * pole = new int [k];
+    for (int i = (k-1); i >= 0; i--){
+        pole[i] = arr[k-i-1];
+    }
+    // dividing
+    for(int m = 0; m < k; m++){
+//      minuly result
+        last_result = result;
+        last_result_copy = last_result;
+        for (int i = 0; last_result_copy > 0; i++){
+            last_result_copy = last_result_copy / 10;
+            last_result_number++;
+        }
+
+//      budouci tmp
+        if (m != k - 1){
+            tmp_future = pole[m+1] * b;
+            tmp_future_copy = tmp_future;
+            for (int i = 0; tmp_future_copy > 0; i++){
+                tmp_future_copy = tmp_future_copy / 10;
+                tmp_future_number++;
+            }
+        }
+//      pocitame tmp
+        tmp = pole[m] * b;
+
+//      pocitame temporary a result
+        if (last_result == 0){
+            if (apole[n] >= tmp){
+                if (m == 0){
+                    temporary = apole[n];
+                } else{
+                    n++;
+                    temporary = apole[n];
+                }
+            } else {
+                temporary = apole[n] * 10 + apole[n+1];
+                while (temporary < tmp){
+                    if (n == d - 1){
+                        break;
+                    } else {
+                        n++;
+                        temporary = temporary * 10 + apole[n+1];
+                    }
+                }
+                n++;
+            }
+            result = temporary - tmp;
+        }
+//      kdyz mame last_result
+        else {
+            n++;
+            if (last_result < tmp){
+                temporary = last_result * 10 + apole[n+1];
+                while (temporary < tmp){
+                    if (n == d - 1){
+                        break;
+                    } else {
+                        n++;
+                        temporary = temporary * 10 + apole[n+1];
+                    }
+                }
+                result = temporary - tmp;
+                n++;
+            } else {
+                temporary = last_result;
+                result = temporary - tmp;
+            }
+        }
+        if (m != k - 1){
+            if (result < tmp_future) {
+
+                result = result * 10 + apole[n + 1];
+            }
+        }
+//      vypisujeme tmp a result
+//      pocet mezer pro tmp___________________________________________
+        temporary_copy = temporary;
+        for (int i = 0; temporary_copy > 0; i++){
+            temporary_copy = temporary_copy / 10;
+            temporary_number++;
+        }
+        tmp_copy = tmp;
+        for (int i = 0; tmp_copy > 0; i++){
+            tmp_copy = tmp_copy / 10;
+            tmp_number++;
+        }
+        for(int i = 0; i < (temporary_number - tmp_number); i++){
+            enter++;
+        }
+        for(int i = 0; i <= enter - tmp_number + 1; i++){
+            printf(" ");
+        }
+//      ________________________________________________________
+        if (tmp == 0){
+            printf(" %d\n", tmp);
+        } else
+            printf("-%d\n", tmp);
+//      pocet mezer pro result _________________________________
+        result_copy = result;
+        for (int i = 0; result_copy > 0; i++){
+            result_copy = result_copy / 10;
+            result_number++;
+        }
+        for(int i = 0; i <= (tmp_future_number - result_number); i++){
+            enter++;
+        }
+//        for (int i = 0; i <= (last_result_number - tmp_number); i++){
+//            enter++;
+//        }
+        for(int i = 0; i < enter; i++){
+            printf(" ");
+        }
+
+        if (m == k - 1){
+            if (result == 0){
+                printf("%d zbytek\n", apole[n+1]);
+                return 0;
+            } else{
+                printf(" %d zbytek\n", result);
+            }
+        } else {
+            if (result == 0){
+                printf("%d\n", apole[n+1]);
+            } else{
+                printf("%d\n", result);
+            }
+        }
+    }
+    return 0;
+}
