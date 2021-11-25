@@ -1,0 +1,87 @@
+#include <stdio.h>
+
+char convertToDigit(int digit) {
+    if (digit < 10) return digit + '0';
+    else if (digit >= 10) {
+        return 'a' + (digit - 10);
+    }
+    return '0';
+}
+
+int getLength(int number, int numberBase) {
+    if (number == 0) return 1;
+    int length = 0;
+    while (number > 0) {
+        number = number / numberBase;
+        length++;
+    }
+    return length;
+}
+
+int printNumber(int decimal, int base) {
+    char remainders[10000];
+    if (decimal == 0) printf("0");
+    int length = 0;
+    while (decimal > 0) {
+        char rem = convertToDigit(decimal % base);
+        decimal = decimal / base;
+        remainders[length] = rem;
+        length++;
+    }
+    for (int l = length - 1; l >= 0; l--) {
+        printf("%c", remainders[l]);
+    }
+    return length;
+}
+
+int main() {
+
+    int index = 0;
+    int currentNumber = 0;
+    int length = 0;
+
+    int soustava = 10;
+
+    printf("Pozice a soustava:\n");
+
+
+    int s;
+    while (((s = scanf(" %d %d", &index, &soustava)) && s != EOF) || s != 2) {
+
+        if (s == EOF) {
+            return 0;
+        }
+
+        if (s != 2 || index < 0 || soustava < 2 || soustava > 36) {
+            printf("Nespravny vstup.\n");
+            return 0;
+        }
+
+        while (index > 0) {
+            length = getLength(currentNumber, soustava);
+            index -= length;
+            currentNumber++;
+            if (index < 0) {
+                currentNumber--;
+            }
+        }
+
+        printNumber(currentNumber, soustava);
+        int numberOfSpaces = index;
+        if (numberOfSpaces < 0) {
+            numberOfSpaces = getLength(currentNumber, soustava) + index;
+        }
+        printf("\n");
+        for (int j = 0; j < numberOfSpaces; j++) {
+            printf(" ");
+        }
+        printf("^\n");
+
+        index = 0;
+        currentNumber = 0;
+        length = 0;
+        soustava = 0;
+    }
+
+    return 0;
+}
