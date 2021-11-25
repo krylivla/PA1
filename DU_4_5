@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE_MAX 1000000
+#define ID 100000
+
+bool isInide (int * array, int size, int number){
+    bool is;
+    for (int i = 0; i <= size; i++){
+        if (array[i] != number)
+            is = false;
+        else {
+            is = true;
+            break;
+        }
+    }
+    return is;
+}
+
+int main() {
+    int id, idFrom, idTo, numberOfEntry = 0, numberOfEntries, countOfDistincts, element;
+    char firstChar;
+    int server[SIZE_MAX];
+    int firstId[ID];
+    int * entriesByQuestion;
+
+    printf("Pozadavky:\n");
+    while ( scanf("%c", &firstChar) == 1 && !feof(stdin)){
+        switch (firstChar) {
+            case '+':
+                if( scanf("%d", &id) != 1 || id < 0 || id >= ID){
+                    printf("Nespravny vstup.\n");
+                    return 0;
+                } else {
+                    if (numberOfEntry >= SIZE_MAX){
+                        printf("Nespravny vstup.\n");
+                        return 0;
+                    }
+                    server[numberOfEntry] = id;
+                    if ( firstId[id] == 0 ) {
+                        firstId[id] = 1;
+                        printf("> prvni navsteva\n");
+                    } else {
+                        firstId[id] = firstId[id] + 1;
+                        printf("> navsteva #%d\n", firstId[id]);
+                    }
+                    numberOfEntry++;
+                }
+                break;
+            case '?':
+                if( scanf("%d %d", &idFrom, &idTo) != 2 || idFrom < 0 || idFrom > idTo || idTo >= numberOfEntry){
+                    printf("Nespravny vstup.\n");
+                    return 0;
+                } else {
+                    numberOfEntries = idTo - idFrom + 1;
+                    entriesByQuestion = (int *) malloc (numberOfEntries * sizeof (*entriesByQuestion));
+                    countOfDistincts = 0;
+                    for(int i = idFrom; i <= idTo; i++){
+                        element = server[i];
+                        if (!isInide(entriesByQuestion, countOfDistincts, element)){
+                            entriesByQuestion[countOfDistincts] = element;
+                            countOfDistincts++;
+                        }
+                    }
+                    printf("> %d / %d\n", countOfDistincts, numberOfEntries);
+                    free(entriesByQuestion);
+                }
+                break;
+            case '\n':
+                break;
+            default:
+                printf("Nespravny vstup.\n");
+                return 0;
+        }
+    }
+    return 0;
+}
